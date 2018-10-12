@@ -1,5 +1,5 @@
 ## USFS介绍 ##
-USFS(user status file system)用户状态系统，是一个基于libfuse的专为展示应用程序状态信息而设计的一个小系统。简化了状态信息系统设计，用很少的代码就可以打造一个较为完善（带vfs功能）的状态信息系统。大家可以在https://github.com/t3swing/usfs获取源码及更多信息。
+USFS(user status file system)用户状态系统，是一个基于libfuse的专为展示应用程序状态信息而设计的一个小系统。简化了状态信息系统设计，用很少的代码就可以打造一个较为完善（带vfs功能）的状态信息系统。大家可以在https://github.com/t3swing/usfs 获取源码及更多信息。
 
 支持以下功能：
 * 文件及目录创建，支持树状目录结构（方便分模块、展示临时对象状态）
@@ -9,10 +9,10 @@ USFS(user status file system)用户状态系统，是一个基于libfuse的专�
 
 linux的proc虚拟文件系统，支持状态和配置两种形式的文件，USFS也支持这两种类型文件，状态文件只读，主要是状态信息输出（格式可自定义），配置文件可读写，需要注意的是，配置文件格式与linux的不同，USFS的配置是key-value对的形式，中间用=号隔开(key与value两边的空格都会去掉，value中间的空格有效)。如：
 
-> sw@t3swing:usfs$ cat hfs/cfg 
-> tabRow = 10 
-> loop = 20 
-> str = hello world
+> sw@t3swing:usfs$ cat hfs/cfg</br>
+> tabRow = 10 </br>
+> loop = 20 </br>
+> str = hello world </br>
 
 修改配置文件，使用echo命令即可，如# echo loop=10 > hfs/cfg 或# echo "loop = 10" >> hfs/cfg ,此时再查看loop的值就能看到变化。
 
@@ -20,12 +20,12 @@ linux的proc虚拟文件系统，支持状态和配置两种形式的文件，US
 ### 编译 ###
 此工程中不包含libfuse的源码，需编译好libfuse.a放到lib目录中。编译直接make即可,编译出的库为lib/libusfs.a，使用时需链接libfuse库，参考main函数例子。
 
-> sw@t3swing:usfs$ make clean
+> sw@t3swing:usfs$ make clean </br>
 > sw@t3swing:usfs$ make
 
 交叉编译
-> sw@t3swing:usfs$ make clean
-> sw@t3swing:usfs$ make host=arm-linux
+> sw@t3swing:usfs$ make clean</br>
+> sw@t3swing:usfs$ make host=arm-linux</br>
 
 ### 测试程序 ###
 ```c
@@ -119,15 +119,15 @@ int main()
 
 ```
 以上的测试程序输出如下：
-> sw@t3swing:hfs$ ls
-> cfg  dir  general  table
-> sw@t3swing:hfs$ cat cfg
-> tabRow = 10 
-> loop = 20 
-> str = hello 
-> sw@t3swing:hfs$ cat table
+> sw@t3swing:hfs$ ls </br>
+> cfg  dir  general  table </br>
+> sw@t3swing:hfs$ cat cfg </br>
+> tabRow = 10  </br>
+> loop = 20  </br>
+> str = hello </br> 
+> sw@t3swing:hfs$ cat table </br>
 > 
-> -----A TABLE TEST-----------------------------------------------
+> -----A TABLE TEST----------------------------------------------- </br>
 >  RowId  Col1   Col2     Col3 Col4   Col5
 >      0      0      0       0 0      0   
 >      1      2      3       5 7      9   
@@ -139,16 +139,16 @@ int main()
 >      7     14     21      35 49     63  
 >      8     16     24      40 56     72  
 >      9     18     27      45 63     81  
-> sw@t3swing:hfs$ cat dir/dir 
-> This is a dir! str:hello
-> sw@t3swing:hfs$ echo tabRow=5 > cfg
-> sw@t3swing:hfs$ cat cfg 
-> tabRow = 5 
-> loop = 20 
-> str = hello 
-> sw@t3swing:hfs$ cat table 
+> sw@t3swing:hfs$ cat dir/dir  </br>
+> This is a dir! str:hello </br>
+> sw@t3swing:hfs$ echo tabRow=5 > cfg </br>
+> sw@t3swing:hfs$ cat cfg  </br>
+> tabRow = 5  </br>
+> loop = 20  </br>
+> str = hello  </br>
+> sw@t3swing:hfs$ cat table  </br>
 > 
-> -----A TABLE TEST-----------------------------------------------
+> -----A TABLE TEST----------------------------------------------- </br>
 >  RowId  Col1   Col2     Col3 Col4   Col5
 >      0      0      0       0 0      0   
 >      1      2      3       5 7      9   
@@ -162,7 +162,7 @@ int main()
 * 配置文件有3个配置项，每个状态文件会用到这个配置项。
 * 可以通过改变配置的值来改变状态信息的值
 
-状态文件的回调函数每次cat的时候（实际是文件open操作时）调用，配置文件创建的时候会调用一次回调函数，每次echo的时候会修改配置项。
+状态文件的回调函数每次cat的时候（实际是文件open操作时）调用，配置文件创建的时候会调用一次回调函数，每次echo的时候会修改配置项。 </br>
 状态信息输出table样式时，每次调用usfs_ftab_add都会添加一列，需注意usfs_ftab_end的位置（在循环里调用），列宽度由usfs_ftab_add的name参数宽度决定。
 
 ## API用法介绍 ##
@@ -177,7 +177,7 @@ int main()
 int usfs_create(char * root_dir);
 int usfs_destroy();
 ```
-初始化与去初始化，初始化需要指定挂载点，即root_dir根目录（使用"/"表示），后面的接口都是此路径的相对路径。
+初始化与去初始化，初始化需要指定挂载点，即root_dir根目录（使用"/"表示），后面的接口都是此路径的相对路径。 </br>
 **<font color=#0000ff>注意</font>**：root_dir指定的一定是目录，一定得存在，且有读写执行权限。
 
 ### 创建、删除目录 ###
@@ -262,9 +262,8 @@ int usfs_delete_cfile(char * path, char * file_name);
 int usfs_add_cfg_int(int hide,char * name, int * value);
 int usfs_add_cfg_str(int hide,char * name, char * str,int max_len);
 ```
-这两个函数用来为配置文件添加配置信息，除了str类型外，只支持int型，其他类型用str类型转吧。hide这个参数用来隐藏配置项的，设为TRUE时配置项虽然被隐藏(cat 配置文件，不会被显示出来)，但实际是可以通过echo命令进行修改的，有啥用？可以理解为高级功能，也可以理解为后门，反正不是本人原创的。
+这两个函数用来为配置文件添加配置信息，除了str类型外，只支持int型，其他类型用str类型转吧。hide这个参数用来隐藏配置项的，设为TRUE时配置项虽然被隐藏(cat 配置文件，不会被显示出来)，但实际是可以通过echo命令进行修改的，有啥用？可以理解为高级功能，也可以理解为后门，反正不是本人原创的。 </br>
 配置文件创建完成后，可以通过echo命令来设置配置项。如echo "cfgname = 1" > /usfs/cfg 命令，会把cfgname的值改为1，echo时使用重定向符'>'与使用追加符'>>'效果是一样的。
 
 **<font color=#0000ff>注意</font>**：配置文件usfs_create_cfile的回调函数，只在usfs_create_cfile调用时执行一次，而不像状态文件usfs_create_sfile的回调函数每次cat都会调用。虽然两者回调函数形式一样，但调用时机及使用的函数都是不一样的。
 
-## 
